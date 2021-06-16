@@ -58,6 +58,8 @@ const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, 'utf-8');
 const dataObj = JSON.parse(data);
 
 const server = http.createServer((request, response) => {
+    console.log(request.url);
+    console.log(url.parse(request.url, true));
     const pathName = request.url;
 
     //Overview page
@@ -65,8 +67,8 @@ const server = http.createServer((request, response) => {
 
     response.writeHead(200, {'Content-type': 'text/html'});
 
-    const cardsHtml = dataObj.map(el => replaceTemplate(tempCard, el));
-    console.log(cardsHtml); // returns array of data strings as html. Needs to be joined into a single string
+    const cardsHtml = dataObj.map(el => replaceTemplate(tempCard, el)).join('');
+    // console.log(cardsHtml); // returns array of data strings as html. Needs to be joined into a single string
 
     const output = tempOverview.replace('{%PRODUCT_CARDS%}', cardsHtml)
     response.end(output);
